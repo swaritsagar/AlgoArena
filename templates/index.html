@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlgoArena</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <nav>
+        <h1>⚔️ AlgoArena</h1>
+        <a href="/add">+ Log Problem</a>
+    </nav>
+
+    <div class="container">
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stat-card">
+                <h2>{{ total }}</h2>
+                <p>Total Logged</p>
+            </div>
+            <div class="stat-card green">
+                <h2>{{ solved }}</h2>
+                <p>Solved</p>
+            </div>
+            <div class="stat-card red">
+                <h2>{{ total - solved }}</h2>
+                <p>Attempted</p>
+            </div>
+            <div class="stat-card orange">
+                <h2>{{ streak }}🔥</h2>
+                <p>Day Streak</p>
+            </div>
+        </div>
+<!-- Weak Topic Detector -->
+{% if weak_topics %}
+<div class="weak-alert">
+    <h3>⚠️ Weak Topics — Focus Here</h3>
+    <div class="weak-topics">
+        {% for topic in weak_topics %}
+        <span class="weak-tag">{{ topic }}</span>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+        <!-- Topic Breakdown -->
+        <h2 class="section-title">📊 Topic Breakdown</h2>
+        <div class="topics">
+            {% for topic, stats in topic_stats.items() %}
+            <div class="topic-card">
+                <h3>{{ topic }}</h3>
+                <p>{{ stats['solved'] }} / {{ stats['total'] }} solved</p>
+                <div class="progress-bar">
+                    <div class="progress" style="width: {{ (stats['solved'] / stats['total'] * 100)|int }}%"></div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Problem History -->
+        <h2 class="section-title">📝 Problem History</h2>
+        
+        <!-- Filters -->
+        <div class="filters">
+            <select onchange="applyFilters()" id="topicFilter">
+                <option value="All">All Topics</option>
+                {% for topic in topics %}
+                <option value="{{ topic }}" {% if topic_filter==topic %}selected{% endif %}>{{ topic }}</option>
+                {% endfor %}
+            </select>
+            <select onchange="applyFilters()" id="difficultyFilter">
+                <option value="All">All Difficulties</option>
+                <option value="Easy" {% if difficulty_filter=='Easy' %}selected{% endif %}>Easy</option>
+                <option value="Medium" {% if difficulty_filter=='Medium' %}selected{% endif %}>Medium</option>
+                <option value="Hard" {% if difficulty_filter=='Hard' %}selected{% endif %}>Hard</option>
+            </select>
+            <select onchange="applyFilters()" id="statusFilter">
+                <option value="All">All Statuses</option>
+                <option value="Solved" {% if status_filter=='Solved' %}selected{% endif %}>Solved</option>
+                <option value="Attempted" {% if status_filter=='Attempted' %}selected{% endif %}>Attempted</option>
+            </select>
+        </div>
+        
+        <script>
+            function applyFilters() {
+                const topic = document.getElementById('topicFilter').value;
+                const difficulty = document.getElementById('difficultyFilter').value;
+                const status = document.getElementById('statusFilter').value;
+                window.location.href = `/?topic=${topic}&difficulty=${difficulty}&status=${status}`;
+            }
+        </script>
+        <table>
+            <thead>
+                <tr>
+                    <th>Problem</th>
+                    <th>Topic</th>
+                    <th>Difficulty</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in problems %}
+                <tr>
+                    <td>{{ p['name'] }}</td>
+                    <td>{{ p['topic'] }}</td>
+                    <td class="{{ p['difficulty'].lower() }}">{{ p['difficulty'] }}</td>
+                    <td class="{{ p['status'].lower() }}">{{ p['status'] }}</td>
+                    <td>{{ p['date_solved'] }}</td>
+                    <td>
+                        <a href="/edit/{{ p['id'] }}" class="edit-btn">Edit</a>
+                        <a href="/delete/{{ p['id'] }}" class="delete-btn" onclick="return confirm('Delete this problem?')">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

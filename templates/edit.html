@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Problem — AlgoArena</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <nav>
+        <h1>⚔️ AlgoArena</h1>
+        <a href="/">← Back to Dashboard</a>
+    </nav>
+
+    <div class="container">
+        <h2 class="section-title">Edit Problem</h2>
+        <div class="form-card">
+            <form method="POST">
+                <div class="form-group">
+                    <label>Problem Name</label>
+                    <input type="text" name="name" value="{{ problem['name'] }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Topic</label>
+                    <select name="topic">
+                        {% for topic in ['Array', 'String', 'Linked List', 'Tree', 'Graph', 'Dynamic Programming',
+                        'Stack', 'Queue', 'Binary Search', 'Recursion', 'Hashing', 'Greedy', 'Backtracking', 'Math'] %}
+                        <option {% if problem['topic']==topic %}selected{% endif %}>{{ topic }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Difficulty</label>
+                    <select name="difficulty">
+                        {% for diff in ['Easy', 'Medium', 'Hard'] %}
+                        <option {% if problem['difficulty']==diff %}selected{% endif %}>{{ diff }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select name="status">
+                        {% for status in ['Solved', 'Attempted'] %}
+                        <option {% if problem['status']==status %}selected{% endif %}>{{ status }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit">Save Changes ✅</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
