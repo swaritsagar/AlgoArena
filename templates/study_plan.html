@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Study Plan — AlgoArena</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <nav>
+        <h1>⚔️ AlgoArena</h1>
+        <a href="/">← Back to Dashboard</a>
+    </nav>
+
+    <div class="container">
+        <h2 class="section-title">🤖 Your AI-Generated Study Plan</h2>
+
+        {% if weak_topics %}
+        <div class="weak-alert" style="margin-bottom: 24px;">
+            <h3>⚠️ Based on your weak topics:</h3>
+            <div class="weak-topics">
+                {% for topic in weak_topics %}
+                <span class="weak-tag">{{ topic }}</span>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="plan-card">
+            {{ plan | replace('\n', '<br>') | safe }}
+        </div>
+    </div>
+</body>
+
+</html>

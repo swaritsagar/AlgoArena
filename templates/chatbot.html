@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA Chatbot — AlgoArena</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <nav>
+        <h1>⚔️ AlgoArena</h1>
+        <a href="/">← Back to Dashboard</a>
+    </nav>
+
+    <div class="container">
+        <h2 class="section-title">🤖 DSA AI Chatbot</h2>
+        <p style="color: #888; margin-bottom: 24px;">Ask me anything about Data Structures & Algorithms.</p>
+
+        <div class="chat-box" id="chatBox">
+            <div class="chat-message bot">
+                <strong>AlgoBot:</strong> Hi! I'm your DSA assistant. Ask me anything about arrays, trees, graphs,
+                dynamic programming, or any other topic! 🚀
+            </div>
+        </div>
+
+        <div class="chat-input">
+            <input type="text" id="questionInput" placeholder="e.g. Explain binary search with an example..." />
+            <button onclick="askQuestion()">Ask ➤</button>
+        </div>
+    </div>
+
+    <script>
+        async function askQuestion() {
+            const input = document.getElementById('questionInput');
+            const chatBox = document.getElementById('chatBox');
+            const question = input.value.trim();
+
+            if (!question) return;
+
+            // Show user message
+            chatBox.innerHTML += `
+                <div class="chat-message user">
+                    <strong>You:</strong> ${question}
+                </div>`;
+
+            // Show loading
+            chatBox.innerHTML += `
+                <div class="chat-message bot" id="loading">
+                    <strong>AlgoBot:</strong> Thinking... 🤔
+                </div>`;
+
+            chatBox.scrollTop = chatBox.scrollHeight;
+            input.value = '';
+
+            try {
+                const response = await fetch('/ask', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ question })
+                });
+
+                const data = await response.json();
+
+                document.getElementById('loading').remove();
+
+                chatBox.innerHTML += `
+                    <div class="chat-message bot">
+                        <strong>AlgoBot:</strong> ${data.answer.replace(/\n/g, '<br>')}
+                    </div>`;
+
+                chatBox.scrollTop = chatBox.scrollHeight;
+            } catch (error) {
+                document.getElementById('loading').innerHTML = '<strong>AlgoBot:</strong> Sorry, something went wrong. Try again!';
+            }
+        }
+
+        document.getElementById('questionInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') askQuestion();
+        });
+    </script>
+</body>
+
+</html>

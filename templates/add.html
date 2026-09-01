@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log Problem — AlgoArena</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <nav>
+        <h1>⚔️ AlgoArena</h1>
+        <a href="/">← Back to Dashboard</a>
+    </nav>
+
+    <div class="container">
+        <h2 class="section-title">Log a Problem</h2>
+        <div class="form-card">
+            <form method="POST">
+                <div class="form-group">
+                    <label>Problem Name</label>
+                    <input type="text" name="name" placeholder="e.g. Two Sum" required>
+                </div>
+                <div class="form-group">
+                    <label>Topic</label>
+                    <select name="topic">
+                        <option>Array</option>
+                        <option>String</option>
+                        <option>Linked List</option>
+                        <option>Tree</option>
+                        <option>Graph</option>
+                        <option>Dynamic Programming</option>
+                        <option>Stack</option>
+                        <option>Queue</option>
+                        <option>Binary Search</option>
+                        <option>Recursion</option>
+                        <option>Hashing</option>
+                        <option>Greedy</option>
+                        <option>Backtracking</option>
+                        <option>Math</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Difficulty</label>
+                    <select name="difficulty">
+                        <option>Easy</option>
+                        <option>Medium</option>
+                        <option>Hard</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select name="status">
+                        <option>Solved</option>
+                        <option>Attempted</option>
+                    </select>
+                </div>
+                <button type="submit">Log Problem ⚔️</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
